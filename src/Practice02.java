@@ -3,9 +3,9 @@ import java.util.Scanner;
 public class Practice02 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Nhập vào số dòng của mảng 2 chiều:");
+        System.out.print("Nhập vào số dòng của mảng 2 chiều : ");
         int n = Integer.parseInt(scanner.nextLine());
-        System.out.print("Nhập vào số cột của mảng 2 chiều:");
+        System.out.print("Nhập vào số cột của mảng 2 chiều : ");
         int m = Integer.parseInt(scanner.nextLine());
         int[][] numbers = new int[n][m];
         do {
@@ -52,8 +52,8 @@ public class Practice02 {
                     int sum = 0;
                     System.out.println("Các phần tử cần in:");
                     for (int i = 0; i < numbers.length; i++) {
-                        for (int j = 0; j < numbers[i].length; j++) {
-                            if (i == 0 || i == n - 1 || j == 0 || j == n - 1 || i == j || i + j == n - 1) {
+                        for (int j = 0; j < numbers[0].length; j++) {
+                            if (i == 0 || i == numbers.length - 1 || j == 0 || j == numbers[0].length - 1 || i == j || i + j == numbers[0].length - 1) {
                                 System.out.printf("%4d", numbers[i][j]);
                                 sum += numbers[i][j];
                             }
@@ -63,33 +63,36 @@ public class Practice02 {
                     System.out.println("Tổng các phần tử nằm trên đường biên, đường chéo : " + sum);
                     break;
                 case 5:
-                    for (int j = 0; j < n; j++) {
-                        for (int i = 0; i < m - 1; i++) {
+                    for (int j = 0; j < numbers[0].length; j++) {
+                        for (int i = 0; i < numbers.length - 1; i++) {
                             int minIndex = i;
-                            for (int k = i + 1; k < m; k++) {
+                            for (int k = i + 1; k < numbers.length; k++) {
                                 if (numbers[k][j] < numbers[minIndex][j]) {
                                     minIndex = k;
                                 }
                             }
-                            int temp = numbers[i][j];
-                            numbers[i][j] = numbers[minIndex][j];
-                            numbers[minIndex][j] = temp;
+                            if (minIndex != i) {
+                                int temp = numbers[i][j];
+                                numbers[i][j] = numbers[minIndex][j];
+                                numbers[minIndex][j] = temp;
+                            }
                         }
                     }
 
                     System.out.println("Ma trận sau khi sắp xếp theo cột:");
                     for (int i = 0; i < numbers.length; i++) {
-                        for (int j = 0; j < numbers[i].length; j++) {
+                        for (int j = 0; j < numbers[0].length; j++) {
                             System.out.printf("%4d", numbers[i][j]);
                         }
                         System.out.println();
                     }
                     break;
                 case 6:
+                    System.out.println("Các số nguyên tố trong ma trận : ");
                     for (int  i = 0; i < numbers.length; i++) {
                         for (int j = 0; j < numbers[i].length; j++) {
                             boolean isPrime = true;
-                            if (numbers[i][j] % 2 == 0) {
+                            if (numbers[i][j] < 2) {
                                 isPrime = false;
                             } else {
                                 for (int k = 2; k <= Math.sqrt(numbers[i][j]); k++) {
@@ -101,7 +104,7 @@ public class Practice02 {
                             }
 
                             if (isPrime) {
-                                System.out.printf("Các số nguyên tố trong ma trận : %d", numbers[i][j]);
+                                System.out.printf("%d", numbers[i][j]);
                             }
                             System.out.println();
                         }
@@ -130,6 +133,11 @@ public class Practice02 {
                 case 8:
                     System.out.print("Nhập số phần tử của mảng 1 chiều: ");
                     int k = scanner.nextInt();
+                    if (k != numbers[0].length) {
+                        System.out.println("Số phần tử của mảng phải bằng số cột của ma trận");
+                        return;
+                    }
+
                     int[] array = new int[k];
 
                     System.out.println("Nhập các phần tử của mảng 1 chiều:");
@@ -141,17 +149,24 @@ public class Practice02 {
                     System.out.print("Nhập chỉ số dòng muốn chèn vào : ");
                     int rowIndex = scanner.nextInt();
 
-                    if (rowIndex < 0 || rowIndex >= n) {
+                    if (rowIndex < 0 || rowIndex >= numbers.length) {
                         System.out.println("Chỉ số dòng không hợp lệ.");
                     } else {
-                        for (int j = 0; j < m; j++) {
-                            numbers[rowIndex][j] = array[j];
+                        int[][] newNumbers = new int[n + 1][m];
+
+                        for (int i = 0, newRow = 0; i <= numbers.length; i++) {
+                            if (i == rowIndex) {
+                                System.arraycopy(array, 0, newNumbers[newRow], 0, m);
+                            } else {
+                                System.arraycopy(numbers[i < rowIndex ? i : i - 1], 0, newNumbers[newRow], 0, m);
+                            }
+                            newRow++;
                         }
 
                         System.out.println("Ma trận 2 chiều sau khi chèn:");
-                        for (int i = 0; i < numbers.length; i++) {
-                            for (int j = 0; j < numbers[i].length; j++) {
-                                System.out.printf("%4d", numbers[i][j]);
+                        for (int i = 0; i < newNumbers.length; i++) {
+                            for (int j = 0; j < newNumbers[i].length; j++) {
+                                System.out.printf("%4d", newNumbers[i][j]);
                             }
                             System.out.println();
                         }

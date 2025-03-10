@@ -37,14 +37,20 @@ public class Practice01 {
                     break;
                 case 3:
                     int count = 0;
-                    int average = 0;
+                    int sum = 0;
                     for (int  i = 0; i < n; i++) {
                         if(numbers[i] > 0) {
-                            count += numbers[i];
-                            average = count / numbers.length;
+                            sum += numbers[i];
+                            count++;
                         }
                     }
-                    System.out.println("Trung bình của các phần tử dương là : "+average);
+                    if (count > 0) {
+                        int average = sum / count;
+                        System.out.println("Trung bình của các phần tử dương là: " + average);
+                    } else {
+                        System.out.println("Không có phần tử dương trong mảng.");
+                    }
+
                     break;
                 case 4:
                     System.out.print("Nhập k từ bàn phím : ");
@@ -75,7 +81,7 @@ public class Practice01 {
                     break;
                 case 6:
                     int cnt = 0;
-
+                    System.out.println("Số nguyên tố trong mảng là :");
                     for(int  i = 0; i < numbers.length; i++) {
                         boolean isPrime = true;
                         if (numbers[i] < 2) {
@@ -88,9 +94,8 @@ public class Practice01 {
                                 }
                             }
                         }
-                        System.out.println("Số nguyên tố trong mảng là :");
                         if (isPrime) {
-                            System.out.printf("%d\t", numbers[i]);
+                            System.out.printf("%d", numbers[i]);
                             cnt++;
                         }
                         System.out.println();
